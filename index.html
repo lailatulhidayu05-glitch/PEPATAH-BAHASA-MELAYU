@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peribahasa - Pepatah</title>
+
+<style>
+/* --- CSS Reset & Asas --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #fce4ec, #e1bee7, #c8e6c9);
+    background-attachment: fixed;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* --- Palet Warna Pastel --- */
+:root {
+    --pink-pastel: #fce4ec;
+    --purple-pastel: #e1bee7;
+    --green-pastel: #c8e6c9;
+    --beige: #f5f5dc;
+    --primary-purple: #9c27b0;
+    --primary-green: #388e3c;
+    --white: #ffffff;
+    --dark-text: #2c3e50;
+}
+
+/* --- Navigasi Atas --- */
+nav {
+    background: var(--white);
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.nav-link {
+    text-decoration: none;
+    color: var(--primary-purple);
+    font-weight: bold;
+    font-size: 16px;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+.nav-link:hover { background: var(--pink-pastel); }
+.nav-link.active {
+    background: var(--purple-pastel);
+    border: 2px solid var(--primary-purple);
+    color: var(--primary-purple);
+}
+
+/* --- Kontena & Pengurus Halaman --- */
+.container {
+    max-width: 950px;
+    margin: 30px auto;
+    background: var(--white);
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    min-height: 70vh;
+}
+.page-section {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Tipografi & Tajuk --- */
+h2 {
+    color: var(--primary-purple);
+    font-size: 28px;
+    margin-bottom: 25px;
+    text-align: center;
+    border-bottom: 3px dashed var(--beige);
+    padding-bottom: 10px;
+}
+h3 { color: var(--primary-purple); margin-bottom: 10px; font-size: 20px;}
+
+.title-animate {
+    font-size: 42px;
+    text-align: center;
+    background: linear-gradient(270deg, #9c27b0, #388e3c, #e91e63);
+    background-size: 600% 600%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: zoomImpact 1s ease-out, gradientFlow 8s ease infinite;
+    margin-bottom: 20px;
+}
+@keyframes zoomImpact {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* --- Elemen Infografik (NOTA) --- */
+.info-box {
+    background: var(--pink-pastel);
+    border-left: 6px solid var(--primary-purple);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+.info-box strong { color: var(--primary-purple); }
+
+.grid-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.feature-badge {
+    background: var(--purple-pastel);
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary-purple);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+.feature-badge:hover { transform: translateY(-5px) scale(1.05); }
+
+.grid-examples {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.example-card {
+    background: var(--beige);
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+}
+.example-card:hover {
+    background: var(--white);
+    border-color: var(--primary-green);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.example-card span { font-weight: bold; color: var(--primary-green); display: block; font-size: 18px; margin-bottom: 5px;}
+
+.chat-container { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+.chat-bubble {
+    max-width: 80%;
+    padding: 15px 20px;
+    border-radius: 20px;
+    position: relative;
+    font-size: 15px;
+}
+.chat-left {
+    background: var(--green-pastel);
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+}
+.chat-right {
+    background: var(--purple-pastel);
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+.chat-bubble b { color: var(--primary-purple); display: block; margin-bottom: 5px;}
+
+.compare-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+.compare-item {
+    background: var(--white);
+    border: 2px dashed var(--primary-purple);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+}
+.compare-item h4 { color: var(--primary-purple); margin-bottom: 8px; font-size: 18px;}
+
+/* --- Butang Kawalan Halaman Bawah (Prev/Next) --- */
+.page-nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+}
+.btn-nav {
+    border: none;
+    border-radius: 12px;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.btn-nav:hover { transform: scale(1.05); }
+.btn-prev { background: #f0f0f0; color: #555; }
+.btn-prev:hover { background: #e0e0e0; }
+.btn-next { background: var(--primary-purple); color: white; }
+.btn-next:hover { box-shadow: 0 5px 15px rgba(156,39,176,0.3); }
+
+/* --- Placeholder Media --- */
+.placeholder-box {
+    background: var(--beige);
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    border-radius: 12px;
+    font-weight: bold;
+    color: #d32f2f;
+    margin: 15px auto;
+    max-width: 500px;
+}
+
+/* --- Animasi Interaktif (Flip Card) --- */
+.flip-grid {
+    display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;
+}
+.flip-container {
+    perspective: 1000px; width: 280px; height: 180px; cursor: pointer;
+}
+.flip-card {
+    width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; position: relative;
+}
+.flip-container.active .flip-card { transform: rotateY(180deg); }
+.flip-front, .flip-back {
+    width: 100%; height: 100%; position: absolute; backface-visibility: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 15px; padding: 20px; text-align: center; font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.flip-front { background: var(--purple-pastel); color: var(--primary-purple); font-size: 18px;}
+.flip-back { background: var(--green-pastel); color: var(--primary-green); transform: rotateY(180deg); font-size: 15px;}
+.click-hint { font-size: 12px; color: #555; margin-bottom: 10px; font-weight: normal; }
+
+/* --- KUIZ CSS --- */
+.info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 15px;}
+.progress { height: 12px; background: #eee; border-radius: 20px; overflow: hidden; margin-bottom: 25px; }
+.progress-bar { height: 100%; width: 0%; background: var(--primary-green); transition: 0.3s; }
+.question { background: var(--beige); padding: 20px; border-radius: 15px; margin-bottom: 20px; border-left: 5px solid var(--primary-purple); }
+.option { display: block; background: var(--white); border: 2px solid #e3e3ee; padding: 13px; border-radius: 12px; margin: 9px 0; cursor: pointer; transition: 0.2s; }
+.option:hover { background: var(--pink-pastel); border-color: var(--primary-purple); }
+.option input { margin-right: 10px; accent-color: var(--primary-purple); }
+.option.correct { background: var(--green-pastel); border-color: var(--primary-green); }
+.option.wrong { background: #ffe0e0; border-color: #e45c5c; }
+.option.disabled { cursor: not-allowed; opacity: 0.8; pointer-events: none; }
+.feedback { font-size: 15px; margin-top: 12px; font-weight: bold; padding: 10px; border-radius: 8px;}
+.btn-quiz { background: var(--primary-green); color: white; border: none; border-radius: 12px; padding: 15px 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top:15px; display: none; transition: 0.3s;}
+.btn-quiz:hover { transform: scale(1.02); }
+#result { display: none; text-align: center; padding: 25px; background: var(--purple-pastel); border-radius: 18px; margin-top: 25px; }
+.score { font-size: 45px; font-weight: bold; color: var(--primary-purple); }
+
+@media (max-width: 600px) {
+    .page-nav-buttons { flex-direction: column; gap: 15px; }
+    .btn-nav { width: 100%; justify-content: center; }
+}
+
+/* Animasi Maskot Terapung */
+@keyframes floatAnim {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+.maskot-comel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 140px; /* Boleh ubah saiz di sini */
+    z-index: 9999;
+    animation: floatAnim 3s ease-in-out infinite;
+    pointer-events: none; /* Supaya tak halang butang lain bila diklik */
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+    <a onclick="showPage('pengenalan')" class="nav-link active" id="nav-pengenalan"> Dunia Pepatah</a>
+    <a onclick="showPage('nota')" class="nav-link" id="nav-nota"> Kenali Pepatah</a>
+    <a onclick="showPage('audio')" class="nav-link" id="nav-audio"> Istana Pepatah</a>
+    <a onclick="showPage('video')" class="nav-link" id="nav-video"> Kisah di Sebalik Pepatah</a>
+    <a onclick="showPage('animasi')" class="nav-link" id="nav-animasi"> Jambatan Makna</a>
+    <a onclick="showPage('kuiz')" class="nav-link" id="nav-kuiz"> Hikayat Pengembaraan Bahasa</a>
+</nav>
+
+<div class="container">
+    
+    <!-- ==================== PENGENALAN ==================== -->
+    <section id="pengenalan" class="page-section" style="display: block;">
+        <h1 class="title-animate">Selamat Datang ke Kelas Cikgu Ayu</h1> 
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="cover.jpg" style="width: 870px; animation: fadeIn 1s ease-in-out;" alt="Cover">
+        </div>
+        <div class="info-box" style="text-align: center;">
+            <p><strong>Mata Pelajaran:</strong> Bahasa Melayu (Tahun 5)</p>
+            <p><strong>Standard Pembelajaran:</strong> 4.1.1 Bercerita dan mengujarkan dialog yang mengandungi peribahasa dan bahasa santun.</p>
+        </div>
+        
+        <h3>Objektif Pembelajaran:</h3>
+        <ul style="margin-left: 20px; line-height: 1.8;">
+            <li>Mengenal pasti sekurang-kurangnya 4 daripada 5 pepatah yang terdapat dalam bahan rangsangan dengan betul.</li>
+            <li>Menjelaskan maksud sekurang-kurangnya 3 daripada 5 pepatah dengan tepat.</li>
+        </ul>
+
+        <div class="page-nav-buttons" style="justify-content: flex-end;">
+            <button class="btn-nav btn-next" onclick="showPage('nota')">Seterusnya: Kenali Pepatah ➔</button>
+        </div>
+    </section>
+
+
+    <!-- ==================== NOTA INFOGRAFIK ==================== -->
+    <section id="nota" class="page-section">
+        <h2>📚 Kenali Pepatah</h2>
+        
+        <!-- 1.0 Maksud -->
+	<div class="info-box">
+	<h3>📖 Maksud</h3>
+        <img src="maksud.jpg" alt="Ikon" style="width: 100%; max-width: 870px; height: auto; border-radius: 0px; margin: 37px auto; display: block;">
+	</div>
+
+        <!-- 2.0 Ciri-ciri -->
+        <h3>✨ Ciri-ciri Pepatah</h3>
+        <div class="grid-features">
+            <div class="feature-badge">Mengandungi Nasihat</div>
+            <div class="feature-badge">Kebijaksanaan Terdahulu</div>
+            <div class="feature-badge">Susunan Kata Tetap</div>
+            <div class="feature-badge">Maksud Tersirat</div>
+            <div class="feature-badge">Membawa Nilai Murni</div>
+        </div>
+
+        <!-- 3.0 Contoh & Maksud -->
+        <h3>💡 Contoh Pepatah & Maksud</h3>
+        <div class="grid-examples">
+            <div class="example-card"> <img src="biarlambatasalselamat.jpg" alt="Ikon" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; margin: 12px auto; display: block;"> Melakukan sesuatu berhati-hati lebih baik daripada terburu-buru.</div>
+            <div class="example-card"> <img src="alahbisategalbiasa.png" alt="Ikon" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; margin: 12px auto; display: block;"> Pekerjaan yang sukar menjadi mudah apabila selalu dilakukan.</div>
+            <div class="example-card"> <img src="hendakseribudaya.jpg" alt="Ikon" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; margin: 12px auto; display: block;"> Orang yang mahu berjaya akan mencari jalan.</div>
+            <div class="example-card"> <img src="dimanaadakemahuan.png" alt="Ikon" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; margin: 12px auto; display: block;"> Usaha membolehkan kejayaan dicapai.</div>
+            <div class="example-card"> <img src="sesaldahulupendapatan.png" alt="Ikon" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; margin: 12px auto; display: block;"> Berfikir sebelum melakukan sesuatu.</div>
+            <div class="example-card"> <img src="ukurbajudibadansendiri.jpg" alt="Ikon" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; margin: 12px auto; display: block;"> Melakukan sesuatu mengikut kemampuan diri.</div>
+            <div class="example-card"> <img src="berakitrakitkehulu.jpg" alt="Ikon" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; margin: 12px auto; display: block;"> Bersusah payah dahulu sebelum menikmati kesenangan.</div>
+            <div class="example-card"> <img src="ingatsebelumkena.jpg" alt="Ikon" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; margin: 12px auto; display: block;"> Berwaspada dan berjimat cermat sebelum susah.</div>
+            <div class="example-card"> <img src="terlajakperahubolehdiundur.jpg" alt="Ikon" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; margin: 12px auto; display: block;"> Berhati-hati ketika bercakap.</div>
+            <div class="example-card"> <img src="yangbaikdijadikanteladan.jpg" alt="Ikon" style="width: 100%; max-width: 400px; height: auto; border-radius: 12px; margin: 12px auto; display: block;"> Mencontohi yang baik, menjauhi yang buruk.</div>
+        </div>
+
+        <!-- 4.0 Penggunaan dalam Ayat -->
+        <h3>💬 Penggunaan dalam Ayat</h3>
+        <div class="chat-container">
+            <div class="chat-bubble chat-left">
+                <b>Contoh 1: Alah bisa tegal biasa</b>
+                "Amir rajin berlatih membaca setiap hari kerana dia percaya bahawa alah bisa tegal biasa."
+            </div>
+            <div class="chat-bubble chat-right">
+                <b>Contoh 2: Hendak seribu daya, tak hendak seribu dalih</b>
+                "Cikgu menasihati murid supaya tidak mudah berputus asa kerana hendak seribu daya, tak hendak seribu dalih."
+            </div>
+            <div class="chat-bubble chat-left">
+                <b>Contoh 3: Ukur baju di badan sendiri</b>
+                "Kita perlulah berbelanja mengikut kemampuan kerana ukur baju di badan sendiri."
+            </div>
+        </div>
+
+        <!-- 5.0 Perbezaan -->
+        <h3>🔍Perbezaan dengan Peribahasa Lain</h3>
+	<img src="perbezaan.jpg" alt="Ikon" style="width: 100%; max-width: 870px; height: auto; border-radius: 0px; margin: 37px auto; display: block;">
+  
+        <div class="page-nav-buttons">
+            <button class="btn-nav btn-prev" onclick="showPage('pengenalan')">⬅ Kembali</button>
+            <button class="btn-nav btn-next" onclick="showPage('audio')">Seterusnya: Istana Pepatah ➔</button>
+        </div>
+    </section>
+
+    <!-- ==================== AUDIO ==================== -->
+    <section id="audio" class="page-section">
+        <h2>🎧 Istana Pepatah: Dengarkan Pepatah</h2>
+        <p style="text-align: center; margin-bottom:15px;">Mari mendengar dialog perbualan antara Cikgu Ayu, Aina dan Zulkarnain dan belajar cara menggunakan pepatah dalam kehidupan seharian.</p> <img src="dialog.png" alt="Ikon" style="width: 100%; max-width: 1120px; height: auto; border-radius: 48px; margin: 48px auto; display: block;">
+        <div style="text-align: center;">
+            <audio controls style="width: 100%; max-width: 400px;">
+                <source src="audio.mp3" type="audio/mpeg">
+                Pelayar anda tidak menyokong elemen audio.
+            </audio>
+        </div>
+        <div class="page-nav-buttons">
+            <button class="btn-nav btn-prev" onclick="showPage('nota')">⬅ Kembali</button>
+            <button class="btn-nav btn-next" onclick="showPage('video')">Seterusnya: Kisah di Sebalik Pepatah ➔</button>
+        </div>
+    </section>
+
+    <!-- ==================== VIDEO ==================== -->
+    <section id="video" class="page-section">
+        <h2>🎬 Kisah di Sebalik Pepatah</h2>
+        <p style="text-align: center; margin-bottom:15px;">Mari tonton video berkenaan pepatah Seperti Kera Mendapat Bunga.</p>
+               <div style="text-align: center;">
+            <video controls width="100%" style="border-radius: 15px; max-width: 870px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <source src="video_pepatah.mp4" type="video/mp4">
+                Pelayar anda tidak menyokong elemen video.
+            </video>
+        </div>
+        <div class="page-nav-buttons">
+            <button class="btn-nav btn-prev" onclick="showPage('audio')">⬅ Kembali</button>
+            <button class="btn-nav btn-next" onclick="showPage('animasi')">Seterusnya: Jambatan Makna ➔</button>
+        </div>
+    </section>
+
+ <!-- ==================== AKTIVITI ANIMASI ==================== -->
+    <section id="animasi" class="page-section">
+        <h2>✨ Jambatan Makna: Memori Pepatah</h2>
+        
+        <div class="info-box" style="text-align: center; background: #fce4ec; border-left-color:#e1bee7;">
+            <p style="font-size: 1.1em; color: #E65100;"><strong>Mari Uji Ingatan Anda! 🧠</strong></p>
+            <p>Lihat gambar pada kad, teka maksud pepatah di dalam hati, kemudian <b>klik pada kad</b> untuk menyemak jawapan anda.</p>
+        </div>
+        
+        <div class="flip-grid" style="margin-top: 30px;">
+            <!-- Kad 1 -->
+            <div class="flip-container" onclick="this.classList.toggle('active')">
+                <div class="flip-card">
+                    <div class="flip-front" style="padding: 0; background: transparent;">
+                        <img src="biarlambatasalselamat.jpg" alt="Biar lambat asalkan selamat" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    </div>
+                    <div class="flip-back">
+                        <strong style="font-size: 18px; margin-bottom: 8px;">Biar lambat asalkan selamat</strong>
+                        Berhati-hati lebih baik daripada terburu-buru.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kad 2 -->
+            <div class="flip-container" onclick="this.classList.toggle('active')">
+                <div class="flip-card">
+                    <div class="flip-front" style="padding: 0; background: transparent;">
+                        <img src="alahbisategalbiasa.png" alt="Alah bisa tegal biasa" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    </div>
+                    <div class="flip-back">
+                        <strong style="font-size: 18px; margin-bottom: 8px;">Alah bisa tegal biasa</strong>
+                        Pekerjaan sukar menjadi mudah apabila selalu dilakukan.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kad 3 -->
+            <div class="flip-container" onclick="this.classList.toggle('active')">
+                <div class="flip-card">
+                    <div class="flip-front" style="padding: 0; background: transparent;">
+                        <img src="ukurbajudibadansendiri.jpg" alt="Ukur baju di badan sendiri" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    </div>
+                    <div class="flip-back">
+                        <strong style="font-size: 18px; margin-bottom: 8px;">Ukur baju di badan sendiri</strong>
+                        Melakukan sesuatu mengikut kemampuan diri.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kad 4 -->
+            <div class="flip-container" onclick="this.classList.toggle('active')">
+                <div class="flip-card">
+                    <div class="flip-front" style="padding: 0; background: transparent;">
+                        <img src="ingatsebelumkena.jpg" alt="Ingat sebelum kena, jimat sebelum habis" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    </div>
+                    <div class="flip-back">
+                        <strong style="font-size: 18px; margin-bottom: 8px;">Ingat sebelum kena, jimat sebelum habis</strong>
+                        Berwaspada dan berjimat cermat sebelum menghadapi kesusahan.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kad 5 -->
+            <div class="flip-container" onclick="this.classList.toggle('active')">
+                <div class="flip-card">
+                    <div class="flip-front" style="padding: 0; background: transparent;">
+                        <img src="terlajakperahubolehdiundur.jpg" alt="Terlajak perahu boleh diundur, terlajak kata buruk padahnya" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    </div>
+                    <div class="flip-back">
+                        <strong style="font-size: 18px; margin-bottom: 8px;">Terlajak perahu boleh diundur, terlajak kata buruk padahnya</strong>
+                        Berhati-hati ketika bercakap kerana kata yang menyakitkan sukar ditarik balik.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-nav-buttons">
+            <button class="btn-nav btn-prev" onclick="showPage('video')">⬅ Kembali</button>
+            <button class="btn-nav btn-next" onclick="showPage('kuiz')">Seterusnya: Hikayat Pengembaraan Bahasa ➔</button>
+        </div>
+    </section>
+
+
+    <!-- ==================== KUIZ ==================== -->
+    <section id="kuiz" class="page-section"> 
+          <div class="info">
+	<canvas id="confetti-canvas" style="position: fixed; top: 0; left: 0; width: 150vw; height: 150vh; pointer-events: none; z-index: 99999;"></canvas>
+     </div>
+<div style="max-width: 800px; margin: 40px auto; text-align: center;">
+      <iframe src="game.html" width="100%" height="1200px" style="border: none; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);" title="Game Pepatah Melayu"></iframe>
+</div>
+  	
+        <div class="page-nav-buttons">
+            <button class="btn-nav btn-prev" onclick="showPage('animasi')">⬅ Kembali </button>
+            <button class="btn-nav btn-next" onclick="showPage('pengenalan')" style="background: var(--primary-green);">🏠 Tamat (Ke Utama)</button>
+        </div>
+<section>
+ 
+</div>
+
+<script>
+// --- FUNGSI NAVIGASI HALAMAN (PAGE SWITCHER) ---
+function showPage(pageId) {
+    const sections = document.querySelectorAll('.page-section');
+    sections.forEach(section => section.style.display = 'none');
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => link.classList.remove('active'));
+
+    document.getElementById(pageId).style.display = 'block';
+    document.getElementById('nav-' + pageId).classList.add('active');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// --- FUNGSI KUIZ (DIKEMAS KINI MENGIKUT NOTA BAHARU) ---
+const questions = [
+{q:"Apakah maksud pepatah 'Alah bisa tegal biasa'?", o:["Jangan mudah berputus asa","Pekerjaan sukar menjadi mudah apabila biasa dilakukan","Kita perlu membantu orang lain"], a:1, e:"Sesuatu yang susah akan menjadi senang jika kita kerap mempraktikkannya."},
+{q:"Pepatah manakah yang menggalakkan kita berjimat cermat?", o:["Biar lambat asalkan selamat","Ukur baju di badan sendiri","Ingat sebelum kena, jimat sebelum habis"], a:2, e:"Pepatah ini mengingatkan kita agar berwaspada dan merancang perbelanjaan sebelum ditimpa kesusahan."},
+{q:"Apakah maksud 'Hendak seribu daya, tak hendak seribu dalih'?", o:["Orang yang berusaha akan mencari jalan","Orang yang berjaya sentiasa bernasib baik","Kita perlu mengikut kemampuan"], a:0, e:"Orang yang benar-benar mahukan sesuatu akan sentiasa mencari jalan penyelesaian, manakala yang malas akan memberi pelbagai alasan."},
+{q:"Situasi manakah sesuai dengan pepatah 'Terlajak perahu boleh diundur, terlajak kata buruk padahnya'?", o:["Berjimat ketika membeli barang","Menjaga tutur kata ketika bercakap","Berusaha bersungguh-sungguh"], a:1, e:"Kata-kata yang menyakitkan hati sukar ditarik balik, jadi berhati-hatilah sebelum bercakap."},
+{q:"Apakah pengajaran daripada pepatah 'Yang baik dijadikan teladan, yang buruk dijadikan sempadan'?", o:["Mencontohi semua perbuatan orang lain","Menjauhi semua orang","Mencontohi perkara baik dan menghindari perkara buruk"], a:2, e:"Kita perlulah mengambil iktibar daripada perkara yang baik dan menjauhi sifat-sifat negatif."}
+];
+
+let score = 0;
+let answeredCount = 0;
+
+function loadQuiz() {
+    const quizContainer = document.getElementById("quiz-container");
+    quizContainer.innerHTML = "";
+    score = 0;
+    answeredCount = 0;
+    
+    questions.forEach((item, index) => {
+        let html = `<div class="question" id="q${index}"><h3>Soalan ${index+1}: ${item.q}</h3>`;
+        item.o.forEach((option, j) => {
+            html += `
+                <label class="option" id="option${index}_${j}" onclick="checkAnswer(${index}, ${j})">
+                    <input type="radio" name="q${index}" value="${j}" style="pointer-events: none;">
+                    ${String.fromCharCode(65+j)}. ${option}
+                </label>
+            `;
+        });
+        html += `<div class="feedback" id="feedback${index}" style="display:none;"></div></div>`;
+        quizContainer.innerHTML += html;
+    });
+}
+
+function checkAnswer(qIndex, selectedValue) {
+    const inputs = document.querySelectorAll(`input[name="q${qIndex}"]`);
+    if(inputs[0].disabled) return; // Elak dijawab berulang kali
+
+    // Tandakan pilihan murid
+    document.querySelector(`#option${qIndex}_${selectedValue} input`).checked = true;
+    
+    // Lumpuhkan semua pilihan bagi soalan ini
+    questions[qIndex].o.forEach((opt, j) => {
+        const label = document.getElementById(`option${qIndex}_${j}`);
+        label.classList.add('disabled');
+        label.querySelector('input').disabled = true;
+    });
+
+    const q = questions[qIndex];
+    const feedback = document.getElementById(`feedback${qIndex}`);
+    feedback.style.display = "block";
+
+    if(selectedValue === q.a) {
+        document.getElementById(`option${qIndex}_${selectedValue}`).classList.add("correct");
+        feedback.style.background = "#d8f8e7";
+        feedback.style.color = "#28a66a";
+        feedback.innerHTML = "🎉 Tahniah! Tepat sekali. <br><br><i>Huraian: " + q.e + "</i>";
+        score++;
+    } else {
+        document.getElementById(`option${qIndex}_${selectedValue}`).classList.add("wrong");
+        document.getElementById(`option${qIndex}_${q.a}`).classList.add("correct"); // Tunjuk jawapan betul
+        
+        feedback.style.background = "#ffe0e0";
+        feedback.style.color = "#d32f2f";
+        feedback.innerHTML = "✗ Kurang tepat. Jawapan sebenar ialah: <strong>" + String.fromCharCode(65+q.a) + "</strong>. <br><br><i>Huraian: " + q.e + "</i>";
+    }
+
+    answeredCount++;
+    document.getElementById("answered").textContent = answeredCount + " / 5 dijawab";
+    document.getElementById("progressBar").style.width = (answeredCount / 5 * 100) + "%";
+
+    if(answeredCount === 5) {
+        setTimeout(showFinalResult, 800);
+    }
+}
+
+function showFinalResult() {
+    document.getElementById("score").textContent = score + " / 5";
+    let message = score === 5 ? "🏆 CEMERLANG! Pemahaman anda sangat mantap!" : 
+                  score >= 3 ? "🌟 TAHNIAH! Teruskan usaha mengulang kaji!" : 
+                  "💪 JANGAN PUTUS ASA! Baca nota kembali dan cuba lagi.";
+    document.getElementById("message").textContent = message;
+    document.getElementById("result").style.display = "block";
+    document.getElementById("restartBtn").style.display = "block";
+}
+
+function restartQuiz() {
+    document.getElementById("result").style.display = "none";
+    document.getElementById("restartBtn").style.display = "none";
+    document.getElementById("progressBar").style.width = "0%";
+    document.getElementById("answered").textContent = "0 / 5 dijawab";
+    loadQuiz();
+    window.scrollTo({ top: document.getElementById("kuiz").offsetTop, behavior:"smooth" });
+}
+
+// Muatkan fungsi kuiz apabila tetingkap dibuka
+window.onload = loadQuiz;
+</script>
+<!-- Maskot Hiasan Penjuru Skrin -->
+<img src="maskot.png" class="maskot-comel" alt="Maskot Projek">
+
+</body>
+</html>
